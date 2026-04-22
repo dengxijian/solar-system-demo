@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>多三维物体可替换的太阳系星球运动仿真</title>
+    <link rel="stylesheet" href="./src/styles.css">
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "./vendor/three/three.module.js",
+                "three/addons/": "./vendor/three/addons/"
+            }
+        }
+    </script>
+</head>
+<body>
+    <div id="startup-hint" class="startup-hint" hidden></div>
+    <aside class="control-panel">
+        <div class="panel-block">
+            <p class="eyebrow">3D Computer Graphics</p>
+            <h1>太阳系运动仿真</h1>
+            <p class="panel-copy">
+                基于三维建模、纹理映射、模型变换、局部光照与阴影方法，
+                对太阳系天体运动进行实时仿真，并支持多种三维形体替换。
+            </p>
+        </div>
+
+        <section class="panel-block">
+            <h2>时间控制</h2>
+            <div class="button-row">
+                <button id="btn-pause">暂停 / 播放</button>
+                <button id="btn-slow">减速</button>
+                <button id="btn-fast">加速</button>
+                <button id="btn-reset">恢复正常</button>
+            </div>
+            <p class="metric">
+                当前时间流速
+                <span id="speed-display" class="metric-value">1.0</span>
+                x
+            </p>
+        </section>
+
+        <section class="panel-block">
+            <h2>观察与轨道</h2>
+            <label for="focus-select">聚焦目标</label>
+            <select id="focus-select"></select>
+            <div class="button-row">
+                <button id="btn-focus">聚焦当前目标</button>
+                <button id="btn-overview">回到总览</button>
+                <button id="btn-orbits">隐藏 / 显示轨道</button>
+            </div>
+        </section>
+
+        <section class="panel-block">
+            <h2>多物体替换</h2>
+            <label for="body-select">替换对象</label>
+            <select id="body-select"></select>
+
+            <label for="shape-select">三维形体</label>
+            <select id="shape-select"></select>
+
+            <div class="button-row">
+                <button id="btn-apply-shape">应用形体</button>
+                <button id="btn-restore-shape">恢复球体</button>
+            </div>
+
+            <div class="button-row">
+                <button id="btn-unique-set">替换全部星球</button>
+                <button id="btn-restore-all">恢复全部球体</button>
+            </div>
+
+            <p class="metric">
+                当前形体
+                <span id="shape-display" class="metric-value">球体</span>
+            </p>
+        </section>
+
+        <section class="panel-block shortcuts">
+            <h2>键盘快捷键</h2>
+            <p><kbd>Space</kbd> 暂停 / 播放</p>
+            <p><kbd>[</kbd> / <kbd>]</kbd> 减速 / 加速</p>
+            <p><kbd>A</kbd> <kbd>D</kbd> 水平旋转视角</p>
+            <p><kbd>W</kbd> <kbd>S</kbd> 上下旋转视角</p>
+            <p><kbd>Q</kbd> <kbd>E</kbd> 放大 / 缩小视野</p>
+            <p><kbd>←</kbd> <kbd>→</kbd> 循环聚焦天体</p>
+            <p><kbd>0</kbd> 总览，<kbd>1-8</kbd> 水星到海王星，<kbd>9</kbd> 太阳</p>
+            <p><kbd>T</kbd> 切换轨道显示</p>
+        </section>
+    </aside>
+
+    <main id="canvas-container"></main>
+    <div id="status-pill" class="status-pill">系统就绪</div>
+
+    <script>
+        window.__SOLAR_SYSTEM_READY__ = false;
+
+        window.setTimeout(() => {
+            if (window.__SOLAR_SYSTEM_READY__) {
+                return;
+            }
+
+            const hint = document.getElementById("startup-hint");
+            if (!hint) {
+                return;
+            }
+
+            if (location.protocol === "file:") {
+                hint.textContent = "检测到你正在直接打开 index.html。请改为双击 start_solar_system.bat 启动，否则浏览器会拦截本地模块加载。";
+            } else {
+                hint.textContent = "页面脚本没有正常启动，请检查浏览器控制台或重新打开启动脚本。";
+            }
+
+            hint.hidden = false;
+        }, 1500);
+    </script>
+    <script type="module" src="./src/main.js"></script>
+</body>
+</html>
